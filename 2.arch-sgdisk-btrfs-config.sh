@@ -74,7 +74,7 @@ sleep 5
 
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@root /dev/mapper/luks /mnt
 sleep 5
-mkdir -p /mnt/{boot,boot/efi,usr,var,home,swap,.snapshots}
+mkdir -p /mnt/{boot/grub,boot/efi,usr,var,home,swap,.snapshots}
 sleep 2
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@usr /dev/mapper/luks /mnt/usr
 sleep 2 
