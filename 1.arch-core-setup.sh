@@ -63,7 +63,8 @@ fi
 /usr/bin/sleep 10
 
 # Update pacman and set for remote access
-pacman -Syy && pacman --noconfirm -S screen openssh reflector
+#pacman -Syy && pacman --noconfirm -S screen openssh reflector
+pacman -Syy 
 if [ $? -ne 0 ]; then
 	echo "ERROR: couldn't update pacman"
 	exit 1;

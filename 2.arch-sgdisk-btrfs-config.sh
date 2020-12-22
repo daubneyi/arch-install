@@ -74,8 +74,8 @@ sleep 5
 
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@root /dev/mapper/luks /mnt
 sleep 5
-mkdir -p /mnt/{boot,usr,var,home,swap,.snapshots}
-sleep 5
+mkdir -p /mnt/{boot,boot/efi,usr,var,home,swap,.snapshots}
+sleep 2
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@usr /dev/mapper/luks /mnt/usr
 sleep 2 
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@var /dev/mapper/luks /mnt/var
@@ -89,6 +89,8 @@ mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@snapshots /dev
 mkfs.fat -v -F32 -n EFI ${1}${part}1
 sleep 5
 mount ${1}${part}1 /mnt/boot
+sleep 2
+mkdir -p /mnt/boot/efi
 sleep 5
 
 swapon /mnt/swap/swapfile
