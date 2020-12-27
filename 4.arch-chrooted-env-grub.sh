@@ -51,9 +51,11 @@ sed -i 's/^HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/
 
 mkinitcpio -P
 
-echo GRUB_CMDLINE_LINUX='"'cryptdevice=UUID=`blkid -s UUID -o value /dev/mapper/luks`:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw'"' >> /etc/default/grub
 echo "GRUB_ENABLE_CRYPTODISK=y" >> /etc/default/grub
-echo 'GRUB_PRELOAD_MODULES="btrfs"' >> /etc/default/grub
+#echo GRUB_CMDLINE_LINUX='"'cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}2`:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw'"' >> /etc/default/grub
+echo GRUB_CMDLINE_LINUX='"'cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}2`:root:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw'"' >> /etc/default/grub
+#echo "GRUB_DISABLE_LINUX_UUID=true" >> /etc/default/grub
+#echo 'GRUB_PRELOAD_MODULES="btrfs"' >> /etc/default/grub
 
 
 #grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ArchLinux --removable -vv
