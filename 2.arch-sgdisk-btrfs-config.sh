@@ -26,9 +26,9 @@ set -e   # exit on error
 
 sgdisk -og $1
 sgdisk -n 1:2048:1050624 -c 1:"EFI System Partition" -t 1:ef00 $1
-#sgdisk -n 2:1050625:17827841 -c 2:"Linux swap" -t 2:8200 $1
+sgdisk -n 2:1050625:1871871 -c 2:"Linux Boot" -t 2:8300 $1
 ENDSECTOR=`sgdisk -E $1`
-sgdisk -n 2:1050625:$ENDSECTOR -c 2:"Linux BTRFS" -t 2:8300 $1
+sgdisk -n 3:1871872:$ENDSECTOR -c 3:"Linux BTRFS" -t 3:8300 $1
 #sgdisk -n 3:17827842:$ENDSECTOR -c 3:"Linux LVM" -t 3:8e00 $1
 sgdisk -p $1
 
@@ -36,12 +36,12 @@ echo "set a strong password!"
 modprobe dm-crypt 
 modprobe dm-mod
 sleep 5
-cryptsetup --verbose luksFormat --type luks2 -v -s 512 -h sha512 ${1}${part}2
+cryptsetup --verbose luksFormat --type luks2 -v -s 512 -h sha512 ${1}${part}3
 
 ls -l /dev/mapper
 
 sleep 5
-cryptsetup open ${1}${part}2 luks
+cryptsetup open ${1}${part}3 luks
 
 sleep 5
 echo "test your strong password!"
@@ -74,7 +74,7 @@ sleep 5
 
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@root /dev/mapper/luks /mnt
 sleep 5
-mkdir -p /mnt/{boot/grub,boot/efi,usr,var,home,swap,.snapshots}
+mkdir -p /mnt/{boot,usr,var,home,swap,.snapshots}
 sleep 2
 mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@usr /dev/mapper/luks /mnt/usr
 sleep 2 
@@ -88,9 +88,13 @@ mount -o noatime,nodiratime,compress=zstd,space_cache,ssd,subvol=@snapshots /dev
 
 mkfs.fat -v -F32 -n EFI ${1}${part}1
 sleep 5
-mount ${1}${part}1 /mnt/boot
+mkfs.ext2 -v -q -L Boot ${1}${part}2
+sleep 5
+mount ${1}${part}2 /mnt/boot
 sleep 2
-mkdir -p /mnt/boot/efi
+mkdir  /mnt/boot/EFI
+sleep 2
+mount ${1}${part}1 /mnt/boot/EFI
 sleep 5
 
 swapon /mnt/swap/swapfile

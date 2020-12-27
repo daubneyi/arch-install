@@ -53,17 +53,18 @@ mkinitcpio -P
 
 echo "GRUB_ENABLE_CRYPTODISK=y" >> /etc/default/grub
 #echo GRUB_CMDLINE_LINUX='"'cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}2`:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw'"' >> /etc/default/grub
-echo GRUB_CMDLINE_LINUX='"'cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}2`:root:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw'"' >> /etc/default/grub
+echo GRUB_CMDLINE_LINUX='"'cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}3`:root:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw'"' >> /etc/default/grub
 #echo "GRUB_DISABLE_LINUX_UUID=true" >> /etc/default/grub
 #echo 'GRUB_PRELOAD_MODULES="btrfs"' >> /etc/default/grub
 
 
 #grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ArchLinux --removable -vv
-grub-install --target=x86_64-efi --efi-directory=/boot --boot-directory=/boot/efi --bootloader-id=GRUB --removable -vv
+#grub-install --target=x86_64-efi --bootloader-id=GRUB --removable -vv
+grub-install --target=x86_64-efi --bootloader-id=grub_uefi --removable --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
 
-mkinitcpio -p linux
+#mkinitcpio -p linux
 
 #bootctl --path=/boot install
 
@@ -71,7 +72,7 @@ mkinitcpio -p linux
 #echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 #echo "initrd /intel-ucode.img" >> /boot/loader/entries/arch.conf
 #echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-#echo "options cryptdevice=UUID=`blkid -s UUID -o value /dev/mapper/luks`:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw" >> /boot/loader/entries/arch.conf
+#echo "options cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}3`:rootluks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw" >> /boot/loader/entries/arch.conf
 
 
 #echo "default  arch.conf" > /boot/loader/loader.conf
