@@ -47,7 +47,8 @@ cat /etc/hosts
 
 sed -i 's#BINARIES=()#BINARIES=(/usr/bin/btrfs)#g' /etc/mkinitcpio.conf
 
-sed -i 's/^HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base keyboard udev autodetect modconf block keymap encrypt btrfs filesystems usr fsck)/g' /etc/mkinitcpio.conf
+#sed -i 's/^HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base keyboard udev autodetect modconf block keymap encrypt btrfs filesystems usr fsck)/g' /etc/mkinitcpio.conf
+sed -i 's/^HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base keyboard udev autodetect modconf block keymap encrypt btrfs filesystems fsck)/g' /etc/mkinitcpio.conf
 
 mkinitcpio -p linux
 
