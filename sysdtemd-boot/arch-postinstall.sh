@@ -40,10 +40,18 @@ echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 systemctl enable --now iwd.service
 systemctl enable --now sshd.service
 
+iwctl station $wifiint scan
+iwctl station $wifiint get-networks
 iwctl --passphrase $wifipsk station $wifiint connect $wifissid
-systemctl enable --now systemd-networkd.service
-systemctl enable --now systemd-resolved.service
-ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+
+#systemctl enable --now systemd-networkd.service
+
+#systemctl enable --now systemd-resolved.service
+#ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+
+exit
+
+reflector --country 'Australia' --latest 200 --age 24 -p https -p http -p ftp --sort rate --save /etc/pacman.d/mirrorlist
 
 pacman -S xorg
 pacman -S xf86-video-intel mesa
@@ -51,12 +59,12 @@ pacman -S xf86-video-intel mesa
 Xorg :0 -configure
 
 pacman -S lightdm
-pacman -S lightdm
 
-su - ${username} <<SUEOF
-git clone https://aur.archlinux.org/yay.git $HOME/yay/
-cd $HOME/yay/
-makepkg -si
 
-yay lightdm-slick-greeter -S
-SUEOF
+#su - ${username} <<SUEOF
+#git clone https://aur.archlinux.org/yay.git $HOME/yay/
+#cd $HOME/yay/
+#makepkg -si
+
+#yay lightdm-slick-greeter -S
+#SUEOF
