@@ -28,7 +28,7 @@ ls -l /etc/localtime
 hwclock --systohc
 hwclock --show --localtime
 
-#echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 echo "en_AU.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
@@ -50,8 +50,7 @@ sed -i 's#BINARIES=()#BINARIES=(/usr/bin/btrfs)#g' /etc/mkinitcpio.conf
 #sed -i 's/^HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base keyboard udev autodetect modconf block keymap encrypt btrfs filesystems usr fsck)/g' /etc/mkinitcpio.conf
 sed -i 's/^HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base keyboard udev autodetect modconf block keymap encrypt btrfs filesystems fsck)/g' /etc/mkinitcpio.conf
 
-mkinitcpio -p linux
-
+mkinitcpio -P
 
 bootctl --path=/boot install
 
@@ -59,7 +58,7 @@ echo "title Arch Linux" > /boot/loader/entries/arch.conf
 echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 echo "initrd /intel-ucode.img" >> /boot/loader/entries/arch.conf
 echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo "options cryptdevice=UUID=`blkid -s UUID -o value /dev/mapper/luks`:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw" >> /boot/loader/entries/arch.conf
+echo "options cryptdevice=UUID=`blkid -s UUID -o value ${1}${part}2`:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@root rd.luks.options=discard fsck.mode=force fsck.repair=yes rw" >> /boot/loader/entries/arch.conf
 
 
 echo "default  arch.conf" > /boot/loader/loader.conf

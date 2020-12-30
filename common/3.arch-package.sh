@@ -10,7 +10,7 @@ reflector --country 'Australia' --latest 200 --age 24 -p https -p http -p ftp --
 
 sleep 5
 
-pacstrap /mnt base base-devel linux linux-firmware efibootmgr systemd-swap sudo screen openssh nftables wpa_supplicant dosfstools reflector cryptsetup btrfs-progs pacman-contrib git bash zsh fish intel-ucode vim vi ntfs-3g ntp ldns networkmanager dhclient
+pacstrap /mnt base base-devel linux linux-firmware efibootmgr systemd-swap sudo screen openssh nftables wpa_supplicant dosfstools reflector cryptsetup btrfs-progs pacman-contrib git bash zsh fish intel-ucode vim vi ntfs-3g ntp ldns networkmanager dhclient snapper cronie
 
 sleep 5
 
