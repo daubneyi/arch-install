@@ -21,6 +21,9 @@ fi
 set -x   # ensure that commands are echoed
 set -e   # exit on error
 
+bold=$(/usr/bin/tput bold)
+underline=$(/usr/bin/tput smul)
+normal=$(/usr/bin/tput sgr0)
 
 ln -sf /usr/share/zoneinfo/Australia/Melbourne /etc/localtime
 ls -l /etc/localtime
@@ -77,3 +80,6 @@ echo "[Action]" >> /etc/pacman.d/hooks/100-systemd-boot.hook
 echo "Description = Upgrading systemd-boot" >> /etc/pacman.d/hooks/100-systemd-boot.hook
 echo "When = PostTransaction" >> /etc/pacman.d/hooks/100-systemd-boot.hook
 echo "Exec = /usr/bin/bootctl update" >> /etc/pacman.d/hooks/100-systemd-boot.hook
+
+echo "You are almost set to proceed to reboot. 
+echo "Don't forget to ${underline} set a root password ${normal} ${bold}Or you risk not being able to login${normal}"
