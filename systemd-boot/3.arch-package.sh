@@ -10,12 +10,12 @@ reflector --country 'Australia' --latest 200 --age 24 -p https -p http -p ftp --
 
 sleep 5
 
-pacstrap /mnt base base-devel linux linux-firmware efibootmgr systemd-swap sudo screen openssh nftables wpa_supplicant dosfstools reflector cryptsetup btrfs-progs pacman-contrib git bash zsh fish intel-ucode vim vi ntfs-3g ntp ldns networkmanager dhclient snapper cronie
+pacstrap /mnt base base-devel linux linux-firmware efibootmgr systemd-swap sudo screen openssh nftables wpa_supplicant dosfstools reflector cryptsetup btrfs-progs pacman-contrib git bash zsh fish intel-ucode vim vi ntfs-3g ntp inetutils ldns networkmanager dhclient snapper cronie
 
 sleep 5
 
 genfstab -U /mnt >> /mnt/etc/fstab
 cat /mnt/etc/fstab
 
-cp "$SCRIPTPATH/arch-chrooted-env.sh" /mnt/root/
+cp "$SCRIPTPATH/4.arch-chrooted-env.sh" /mnt/root/
 ls -l /mnt/root/arch-chrooted-env.sh

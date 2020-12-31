@@ -1,12 +1,9 @@
 #!/bin/evn -S bash -e -x
 
-wifiint=""
-wifissid=""
-wifipsk=""
 username=""
 
 usage() {                                      # Function: Print a help message.
-  echo "Usage: $0 [ -i WIFI_INT_NAME ] [ -s SSID ] [ -p PSK] [ -u USERNAME ]" 1>&2 
+  echo "Usage: $0 [ -u USERNAME ]" 1>&2 
 }
 
 exit_abnormal() {                              # Function: Exit with error.
@@ -14,12 +11,9 @@ exit_abnormal() {                              # Function: Exit with error.
   exit 1
 }
 
-while getopts "i:s:p:" option; do
+while getopts "u:" option; do
    case "${option}"
       in
-         i) wifiint=${OPTARG};;
-         s) wifissid=${OPTARG};;
-         p) wifipsk=${OPTARG};;
          u) username=${OPTARG};;
 	 :) exit_abnormal;;
    esac
@@ -27,29 +21,27 @@ done
 
 useradd --create-home --groups wheel --user-group --shell /usr/bin/fish ${username}
 
-systemctl enable --now iwd.service
+systemctl enable --now NetWorkManager.service
 
-echo "[Match]" > /etc/systemd/network/25-wireless.network
-echo "Name=$wifiint" >> /etc/systemd/network/25-wireless.network
-echo "" >> /etc/systemd/network/25-wireless.network
-echo "[Network]" >> /etc/systemd/network/25-wireless.network
-echo "DHCP=yes" >> /etc/systemd/network/25-wireless.network
+#echo "[Match]" > /etc/systemd/network/25-wireless.network
+#echo "Name=$wifiint" >> /etc/systemd/network/25-wireless.network
+#echo "" >> /etc/systemd/network/25-wireless.network
+#echo "[Network]" >> /etc/systemd/network/25-wireless.network
+#echo "DHCP=yes" >> /etc/systemd/network/25-wireless.network
 
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
-systemctl enable --now iwd.service
+#systemctl enable --now iwd.service
 systemctl enable --now sshd.service
 
-iwctl station $wifiint scan
-iwctl station $wifiint get-networks
-iwctl --passphrase $wifipsk station $wifiint connect $wifissid
+#iwctl station $wifiint scan
+#iwctl station $wifiint get-networks
+#iwctl --passphrase $wifipsk station $wifiint connect $wifissid
 
 #systemctl enable --now systemd-networkd.service
 
 #systemctl enable --now systemd-resolved.service
 #ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-
-exit
 
 reflector --country 'Australia' --latest 200 --age 24 -p https -p http -p ftp --sort rate --save /etc/pacman.d/mirrorlist
 
