@@ -19,9 +19,9 @@ while getopts "u:" option; do
    esac
 done
 
-useradd --create-home --groups wheel --user-group --shell /usr/bin/fish ${username}
+useradd --create-home --user-group --groups wheel --shell /usr/bin/fish ${username}
 
-systemctl enable --now NetWorkManager.service
+systemctl enable --now NetworkManager.service
 
 #echo "[Match]" > /etc/systemd/network/25-wireless.network
 #echo "Name=$wifiint" >> /etc/systemd/network/25-wireless.network
@@ -43,7 +43,7 @@ systemctl enable --now sshd.service
 #systemctl enable --now systemd-resolved.service
 #ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
-reflector --country 'Australia' --latest 200 --age 24 -p https -p http -p ftp --sort rate --save /etc/pacman.d/mirrorlist
+reflector --country 'Australia' --latest 20 --age 24 -p https -p http -p ftp --sort rate --save /etc/pacman.d/mirrorlist
 
 pacman -S xorg
 pacman -S xf86-video-intel mesa
